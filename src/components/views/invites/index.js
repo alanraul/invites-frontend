@@ -29,23 +29,31 @@ class Invites extends Component {
     })
   }
 
+  onChangeAddInput (e) {
+    console.log(e.target)
+  }
+
   // --------------------------------------------------------------------------
   // Renderiza una lista de invites.
   // --------------------------------------------------------------------------
   renderInvites () {
     if (this.state.invites.length > 0) {
       let body = this.state.invites.map(function (invite, index) {
+        console.log(invite)
+        console.log(process.env.API_SERVER)
         return (
           <Link
             key={index}
-            className='box column is-4'
+            className='box column is-4 has-text-centered'
             to={`/invites/${invite.id}`}
           >
-            {invite.template}
+            <img
+              src={process.env.TEMPLATES_BUCKET + invite.template}
+              width='40%'
+            />
           </Link>
         )
       })
-
       return body
     }
     return <div className='notification'>No hay invites disponibles</div>
@@ -53,9 +61,11 @@ class Invites extends Component {
 
   render () {
     return (
-      <div>
-        <h1>Home</h1>
-        {this.renderInvites()}
+      <div className='container'>
+        <h1 className='title is-1'>Invitaciones</h1>
+        <div class='columns is-multiline is-gapless'>
+          {this.renderInvites()}
+        </div>
       </div>
     )
   }

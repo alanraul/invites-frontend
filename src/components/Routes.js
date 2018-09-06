@@ -12,12 +12,14 @@ const browserHistory = createBrowserHistory()
 
 // the AppRoutes component
 const AppRoutes = () => (
-  <BrowserRouter history={browserHistory}>
-    <Switch>
-      <Route path='/invites/:id' component={Invite} />
-      <Route path='/' component={Invites} />
-    </Switch>
-  </BrowserRouter>
+  <section className='section'>
+    <BrowserRouter history={browserHistory}>
+      <Switch>
+        <Route path='/invites/:id' component={Invite} />
+        <Route path='/' component={Invites} />
+      </Switch>
+    </BrowserRouter>
+  </section>
 )
 
 export default AppRoutes

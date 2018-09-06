@@ -60,6 +60,10 @@ function Get (route, params = {}) {
   return request('GET', route, params, null)
 }
 
+function Put (route, query, params, data) {
+  return request('PUT', route, query, data)
+}
+
 // Exported functions
 class Invites {
   static List (data) {
@@ -71,4 +75,10 @@ class Invites {
   }
 }
 
-export default { Invites }
+class Texts {
+  static Update (inviteId, id, data) {
+    return Put('/invites/' + inviteId + '/texts/' + id, {}, '', data)
+  }
+}
+
+export default { Invites, Texts }
