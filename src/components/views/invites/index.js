@@ -59,13 +59,62 @@ class Invites extends Component {
     return <div className='notification'>No hay invites disponibles</div>
   }
 
+  openModal (e) {
+    document.getElementById('add-image').classList.add('is-active')
+  }
+
+  closeModal (e) {
+    document.getElementById('add-image').classList.remove('is-active')
+  }
+
+  renderModal () {
+    return (
+      <div className='modal' id='add-image'>
+        <div
+          className='modal-background'
+          onClick={this.closeModal.bind(this)}
+        />
+        <div className='modal-card'>
+          <header className='modal-card-head'>
+            <p className='modal-card-title'>Modal title</p>
+            <button
+              className='delete'
+              aria-label='close'
+              onClick={this.closeModal.bind(this)}
+            />
+          </header>
+          <section className='modal-card-body'>
+            <input className='input' type='text' placeholder='Text input' />
+          </section>
+          <footer className='modal-card-foot'>
+            <button className='button is-success'>Crear</button>
+            <button className='button' onClick={this.closeModal.bind(this)}>
+              Cancel
+            </button>
+          </footer>
+        </div>
+      </div>
+    )
+  }
+
   render () {
     return (
       <div className='container'>
-        <h1 className='title is-1'>Invitaciones</h1>
-        <div class='columns is-multiline is-gapless'>
+        <div className='columns is-multiline is-gapless'>
+          <div className='column is-12 has-text-right'>
+            <button
+              className='button is-info is-medium is-outlined is-rounded'
+              onClick={this.openModal.bind(this)}
+            >
+              +
+            </button>
+          </div>
+          <br />
+          <br />
+          <br />
           {this.renderInvites()}
         </div>
+        {this.renderModal()}
       </div>
     )
   }
