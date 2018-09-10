@@ -91,4 +91,10 @@ class Texts {
   }
 }
 
-export default { Invites, Texts }
+class Messages {
+  static Create (data) {
+    return Post('/messages', {}, '', data)
+  }
+}
+
+export default { Invites, Texts, Messages }

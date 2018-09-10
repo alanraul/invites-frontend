@@ -23,7 +23,8 @@ class Invite extends Component {
         coordinates: '0,0',
         color: '#FFFFFF',
         align: 'center'
-      }
+      },
+      image: ''
     }
     this.state = { ...this.data }
   }
@@ -37,7 +38,8 @@ class Invite extends Component {
         return window.alert('Hubo un problema al cargar invitaciones')
       }
 
-      this.setState({ invite: response.data })
+      let image = process.env.TEMPLATES_BUCKET + response.data.template
+      this.setState({ invite: response.data, image: image })
     })
   }
 
@@ -90,10 +92,47 @@ class Invite extends Component {
             texts: { [index]: { $set: response.data } }
           })
         })
+
+        this.createMessage()
       })
       .catch(e => {
         console.error(e)
-        window.alert('Hubo un problema al actulizar el texto')
+        window.alert('Hubo un problema al actualizar el texto')
+      })
+  }
+
+  createMessage () {
+    let body = {
+      invite_id: this.state.invite.id,
+      texts: [
+        {
+          text: 'DESPEDIDA DE SOLTERA',
+          tag: 'event'
+        },
+        {
+          text: 'LUZ OSMARA BLANCO REYNA',
+          tag: 'celebrated'
+        },
+        {
+          text:
+            'CALZ. GRAL. MARIANO ESCOBEDO 555, POLANCO, POLANCO V SECC, 11580 CIUDAD DE MÉXICO, CDMX',
+          tag: 'place'
+        },
+        {
+          text: 'SÁBADO 6 DE JULIO A LAS 2:30 PM',
+          tag: 'date'
+        }
+      ]
+    }
+
+    API.Messages.Create({ message: body })
+      .then(response => {
+        console.log(response)
+        this.setState({ image: response.uri })
+      })
+      .catch(e => {
+        console.error(e)
+        window.alert('Hubo un problema al crear el texto')
       })
   }
 
@@ -375,10 +414,7 @@ class Invite extends Component {
 
         <div className='columns is-multiline'>
           <div className='column is-5 is-black'>
-            <img
-              src={process.env.TEMPLATES_BUCKET + this.state.invite.template}
-              width='100%'
-            />
+            <img src={this.state.image} width='100%' />
           </div>
           <div className='column is-7'>{this.renderTexts()}</div>
         </div>
