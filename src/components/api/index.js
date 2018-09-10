@@ -59,7 +59,9 @@ const request = async (method, endpoint, queryArray, body) => {
 function Get (route, params = {}) {
   return request('GET', route, params, null)
 }
-
+function Post (route, query, params, data) {
+  return request('POST', route, query, data)
+}
 function Put (route, query, params, data) {
   return request('PUT', route, query, data)
 }
@@ -73,11 +75,19 @@ class Invites {
   static Show (id) {
     return Get('/invites/' + id, {}, null)
   }
+
+  static Create (data) {
+    return Post('/invites', {}, '', data)
+  }
 }
 
 class Texts {
   static Update (inviteId, id, data) {
     return Put('/invites/' + inviteId + '/texts/' + id, {}, '', data)
+  }
+
+  static Create (id, data) {
+    return Post('/invites/' + id + '/texts', {}, '', data)
   }
 }
 

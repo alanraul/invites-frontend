@@ -11,7 +11,10 @@ class Invites extends Component {
 
     this.data = {
       title: 'Invites · Coyote Bot',
-      invites: []
+      invites: [],
+      form: {
+        template: ''
+      }
     }
     this.state = { ...this.data }
   }
@@ -29,8 +32,21 @@ class Invites extends Component {
     })
   }
 
-  onChangeAddInput (e) {
-    console.log(e.target)
+  createImage (e) {
+    API.Invites.Create({ invite: this.state.form }).then(response => {
+      if (response.errors) {
+        return window.alert('Hubo un problema al cargar invitaciones')
+      }
+      let invites = this.state.invites
+      invites.push(response.data)
+
+      this.setState({ invites: invites, form: { template: '' } })
+    })
+    document.getElementById('add-image').classList.remove('is-active')
+  }
+
+  onChangeInput (e) {
+    this.setState({ form: { template: e.target.value } })
   }
 
   // --------------------------------------------------------------------------
@@ -39,8 +55,6 @@ class Invites extends Component {
   renderInvites () {
     if (this.state.invites.length > 0) {
       let body = this.state.invites.map(function (invite, index) {
-        console.log(invite)
-        console.log(process.env.API_SERVER)
         return (
           <Link
             key={index}
@@ -84,10 +98,26 @@ class Invites extends Component {
             />
           </header>
           <section className='modal-card-body'>
-            <input className='input' type='text' placeholder='Text input' />
+            <div className='field'>
+              <label className='label'>Nombre de la imagen</label>
+              <div className='control'>
+                <input
+                  className='input'
+                  type='text'
+                  onChange={this.onChangeInput.bind(this)}
+                  value={this.state.form.template}
+                  placeholder='00.png'
+                />
+              </div>
+            </div>
           </section>
           <footer className='modal-card-foot'>
-            <button className='button is-success'>Crear</button>
+            <button
+              className='button is-success'
+              onClick={this.createImage.bind(this)}
+            >
+              Crear
+            </button>
             <button className='button' onClick={this.closeModal.bind(this)}>
               Cancel
             </button>
